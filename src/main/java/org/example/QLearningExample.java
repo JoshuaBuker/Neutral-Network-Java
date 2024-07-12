@@ -17,7 +17,7 @@ public class QLearningExample {
     static final double LEARNING_RATE = 0.1;
     static final double DISCOUNT_FACTOR = 0.9;
     static final double EXPLORATION_RATE = 0.1;
-    static final int DELAY = 5;  // Delay in milliseconds
+    static final int DELAY = 50;  // Delay in milliseconds
 
     public static void main(String[] args) {
         QLearningAI ai = new QLearningAI(GRID_SIZE * GRID_SIZE, 4, LEARNING_RATE, DISCOUNT_FACTOR, EXPLORATION_RATE);
@@ -54,7 +54,7 @@ public class QLearningExample {
             }
             int action = ai.chooseAction(state.toArray());
             GameState nextState = state.move(Action.values()[action]);
-            double reward = nextState.isGoal() ? 10 : -1;  // Smaller reward for reaching the goal
+            double reward = calculateReward(state, nextState);
             ai.learn(state.toArray(), action, reward, nextState.toArray());
             state = nextState;
             totalReward += reward;
@@ -62,6 +62,13 @@ public class QLearningExample {
             if (nextState.isGoal()) break;
         }
         return new double[]{steps, totalReward};
+    }
+
+    private static double calculateReward(GameState currentState, GameState nextState) {
+        int currentDistance = Math.abs(currentState.x - GameState.GOAL_X) + Math.abs(currentState.y - GameState.GOAL_Y);
+        int nextDistance = Math.abs(nextState.x - GameState.GOAL_X) + Math.abs(nextState.y - GameState.GOAL_Y);
+        if (nextState.isGoal()) return 10;
+        return nextDistance < currentDistance ? 0.01 : -0.01;
     }
 
     private static JPanel createChartPanel(double[][] rewards) {
