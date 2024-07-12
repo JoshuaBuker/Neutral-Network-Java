@@ -17,7 +17,7 @@ public class QLearningExample {
     static final double LEARNING_RATE = 0.1;
     static final double DISCOUNT_FACTOR = 0.9;
     static final double EXPLORATION_RATE = 0.1;
-    static final int DELAY = 50;  // Delay in milliseconds
+    static final int DELAY = 20;  // Delay in milliseconds
 
     public static void main(String[] args) {
         QLearningAI ai = new QLearningAI(GRID_SIZE * GRID_SIZE, 4, LEARNING_RATE, DISCOUNT_FACTOR, EXPLORATION_RATE);
